@@ -1,0 +1,6 @@
+run
+daily.py
+insert_crypto_price_data.py
+news.py
+insert pics in admin module
+daily_score.py(for sentiment)
