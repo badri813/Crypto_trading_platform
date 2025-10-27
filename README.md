@@ -51,7 +51,14 @@ This project is a web-based **Crypto Trading Platform** prototype designed to fe
     ```
 2.  **Install dependencies:**
     ```bash
+    # Install Python dependencies
     pip install -r requirements.txt
+
+    # Additional Setup Required:
+    # 1. Install ChromeDriver for Selenium (match your Chrome version)
+    # 2. Set up Kafka broker (localhost:9092)
+    # 3. Configure MySQL database (mycrypto_2)
+    # 4. Configure AWS credentials for S3 access
     
     ```
 3.  **Database Setup:**
