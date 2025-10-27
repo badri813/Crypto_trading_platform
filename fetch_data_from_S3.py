@@ -2,8 +2,8 @@
 import boto3
 import os
 
-ACCESS_KEY = "AKIA3T5PI3WKGLBLF7OS"
-SECRET_KEY = "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"
+ACCESS_KEY = ""
+SECRET_KEY = ""
 BUCKET_NAME = "crypto-project12"
 
 # Save files into current project folder
@@ -29,4 +29,5 @@ if "Contents" in response:
         s3.download_file(BUCKET_NAME, key, filename)
 else:
     print("No files found in that folder.")
+
 
