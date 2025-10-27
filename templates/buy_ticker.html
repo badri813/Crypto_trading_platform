@@ -1,0 +1,69 @@
+{% include 'uhead.html' %}
+>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .sell-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 25px;
+      width: 400px;
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: fadeIn 0.8s ease;
+    }
+    .sell-card h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .sell-card select, .sell-card input, .sell-card button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+    }
+    .sell-card button {
+      background: #ff6600;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .sell-card button:hover {
+      background: #ff8533;
+      transform: scale(1.05);
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="sell-card mt-100 ml-600">
+    <h2>Buy {{ tx.ticker }}</h2>
+    <p>Coins: {{ tx.number_of_coins }}</p>
+    <p>Price: {{ tx.current_price }}</p>
+    <form method="post">
+      <label for="payment_type">Select Payment Type:</label>
+      <select name="payment_type" required>
+        <option value="wallet">Wallet</option>
+        <option value="upi">UPI</option>
+      </select>
+
+      <label for="acc_number">Enter Account / UPI ID:</label>
+      <input type="text" name="acc_number" required>
+
+      <button type="submit">Confirm Buy</button>
+    </form>
+  </div>
+</body>
+</html>

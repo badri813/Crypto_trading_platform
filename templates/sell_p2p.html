@@ -1,0 +1,89 @@
+{% include 'uhead.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sell on P2P</title>
+    <style>
+        .sell-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 25px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .sell-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sell-container select,
+        .sell-container input,
+        .sell-container button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        .sell-container button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .sell-container button:hover {
+            background: #0056b3;
+        }
+        .message {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="sell-container">
+    <h2>Sell on P2P</h2>
+
+    {% if message %}
+    <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <form method="POST" action="/sell_p2p">
+    <label for="ticker">Select Ticker:</label>
+    <select name="ticker" required onchange="updateTransactionId(this)">
+        <option value="">-- Select Ticker --</option>
+        {% for item in portfolio %}
+            <option value="{{ item.ticker }}" data-tid="{{ item.transaction_id }}">
+                {{ item.ticker }} ({{ item.remaining_coins }} available)
+            </option>
+        {% endfor %}
+    </select>
+
+    <!-- hidden transaction_id field -->
+    <input type="hidden" name="transaction_id" id="transaction_id">
+
+    <label for="price">Enter Price ($):</label>
+    <input type="number" step="0.01" name="price" placeholder="Enter your price" required>
+
+    <label for="payment_mode">Payment Mode:</label>
+    <select name="payment_mode" required>
+        <option value="">-- Select Payment Mode --</option>
+        <option value="Wallet">Wallet</option>
+        <option value="Bank">Bank</option>
+    </select>
+
+    <button type="submit">Place Sell Order</button>
+</form>
+
+<script>
+function updateTransactionId(selectElem) {
+    let tid = selectElem.options[selectElem.selectedIndex].getAttribute("data-tid");
+    document.getElementById("transaction_id").value = tid;
+}
+</script>
+
+</div>
+</body>
+</html>

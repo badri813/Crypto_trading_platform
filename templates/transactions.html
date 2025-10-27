@@ -1,0 +1,43 @@
+{% include 'uhead.html' %}
+<div class="main-content">
+  <div class="left mt-50" style="width: 100%;">
+    <h1>Transaction <span class="highlight">History</span></h1>
+    <div class="card">
+      {% if transactions %}
+      <table style="width: 100%; border-collapse: collapse; color: #120e0e;">
+        <thead>
+          <tr style="background-color: #b9bec5; text-align: left;">
+            <th style="padding: 12px;">Crypto Price ID</th>
+            <th style="padding: 12px;">Coins</th>
+            <th style="padding: 12px;">Amount</th>
+            <th style="padding: 12px;">Cost</th>
+            <th style="padding: 12px;">Type</th>
+            <th style="padding: 12px;">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for txn in transactions %}
+          {% set crypto_price = get_crypto_price_by_txn(txn[2]) %}
+          <tr style="border-bottom: 1px solid #2b313d;">
+            <td style="padding: 10px;">{{ crypto_price[1] }}</td>
+            <td style="padding: 10px;">{{ txn[3] }}</td>
+            <td style="padding: 10px;">${{ "%.3f"|format(txn[4]|float) }}</td>
+            <td style="padding: 10px;">${{ txn[5] }}</td>
+            <td style="padding: 10px;">
+              {% if txn[6] == 'buy' %}
+                <span style="color: green;" class="green">Buy</span>
+              {% else %}
+                <span style="color: #e53935;">Sell</span>
+              {% endif %}
+            </td>
+            <td style="padding: 10px;">{{ txn[7] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p style="padding: 20px; text-align: center; font-style: italic; color: #666;">No transactions available.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>

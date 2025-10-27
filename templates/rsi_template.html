@@ -1,0 +1,120 @@
+{% include 'uhead.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title >RSI Dashboard</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .graph-section {
+            flex: 0 0 52%;
+        }
+        .summary-section {
+            flex: 0 0 45%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 tickers per row */
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.5);
+        }
+        .progress-bar {
+            height: 15px;
+            border-radius: 10px;
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            margin-top: 8px;
+        }
+        .progress-overbought {
+            background-color: red;
+            height: 100%;
+        }
+        .progress-oversold {
+            background-color: green;
+            height: 100%;
+        }
+        h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #ffd700;
+        }
+        p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .legend {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.legend-box {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 6px;
+    border-radius: 3px;
+}
+
+.legend-box.oversold {
+    background-color: green;
+}
+
+.legend-box.overbought {
+    background-color: red;
+}
+
+    </style>
+</head>
+<body>
+    <h1 class="ml-600">RSI Heatmap Dashboard</h1>
+    <div class="container">
+        <!-- Left Side Graph -->
+        <div class="graph-section">
+            {{ graph_html | safe }}
+        </div>
+
+        <!-- Right Side Summary -->
+        <!-- Legend for Oversold / Overbought -->
+        <div>
+            <!-- Legend -->
+            <div class="legend">
+                <span><span class="legend-box oversold"></span> Oversold</span>
+                <span><span class="legend-box overbought"></span> Overbought</span>
+            </div>
+
+            <!-- Cards -->
+            <div class="summary-section">
+                {% for row in summary_data %}
+                <div class="card">
+                    <h3>{{ row.Ticker }}</h3>
+                    <p>
+                        Oversold: {{ "%.2f"|format(row.OversoldPercent) }}% |
+                        Overbought: {{ "%.2f"|format(row.OverboughtPercent) }}%
+                    </p>
+
+                    <div class="progress-bar">
+                        <div class="progress-oversold" style="width: {{ row.OversoldPercent }}%;"></div>
+                        <div class="progress-overbought" style="width: {{ row.OverboughtPercent }}%;"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

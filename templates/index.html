@@ -1,0 +1,99 @@
+{% include 'head.html' %}
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .crypto-table {
+            width: 100%;
+            background-color: white;
+            border: 2px solid gold;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        .crypto-table th {
+            background-color: gold;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .crypto-table td {
+            text-align: center;
+            color: black;
+            padding: 8px;
+            font-size: 14px;
+        }
+        .crypto-table td.positive { color: green; font-weight: bold; }
+        .crypto-table td.negative { color: red; font-weight: bold; }
+        .crypto-table td.neutral { color: orange; font-weight: bold; }
+        h2 { font-size: 28px; }
+        .icon-img {
+            width: 28px;
+            height: 28px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container mt-5">
+    <h2 class="text-center text-warning mb-4">📊 Crypto Market Overview</h2>
+    <table class="table table-bordered crypto-table">
+        <thead>
+            <tr>
+                <th>Icon</th>
+                <th>Ticker</th>
+                <th>Open Price ($)</th>
+                <th>Volume</th>
+                <th>% Change</th>
+                <th>% News Sentiment</th>
+                <th>% News Sentiment_3days</th>
+            </tr>
+        </thead>
+       <tbody>
+{% for row in data %}
+<tr>
+    <td>
+        {% if row.image_name %}
+            <img src="../static/image_icon/{{ row.image_name }}" alt="{{ row.ticker }}" class="icon-img">
+        {% else %}
+            ❌
+        {% endif %}
+    </td>
+    <td>{{ row.ticker }}</td>
+    <td>{{ "%.2f"|format(row.open|float) }}</td>
+    <td>{{ row.volume }}</td>
+    <td class="{% if row.percentage_change < 0 %}negative{% elif row.percentage_change == 0 %}neutral{% else %}positive{% endif %}">
+        {% if row.percentage_change > 0 %}
+            +{{ "%.4f"|format(row.percentage_change|float) }}%
+        {% else %}
+            {{ "%.4f"|format(row.percentage_change|float) }}%
+        {% endif %}
+    </td>
+   <td class="{% if row.avg_sentiment_score is not none and row.avg_sentiment_score >= 0.5 %}positive{% elif row.avg_sentiment_score is not none %}negative{% else %}neutral{% endif %}">
+        {% if row.avg_sentiment_score is not none %}
+            {{ "%.3f"|format(row.avg_sentiment_score|float) }}
+        {% else %}
+            N/A
+        {% endif %}
+    </td>
+    <td class="{% if row.avg_sentiment_score is not none and row.avg_sentiment_score >= 0.5 %}positive{% elif row.avg_sentiment_score is not none %}negative{% else %}neutral{% endif %}">
+        {% if row.avg_sentiment_score is not none %}
+            {{ "%.3f"|format(row.avg_sentiment_score1|float) }}
+        {% else %}
+            N/A
+        {% endif %}
+    </td>
+
+</tr>
+{% endfor %}
+</tbody>
+    </table>
+</div>
+</body>
+</html>

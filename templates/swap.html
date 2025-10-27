@@ -1,0 +1,252 @@
+<!--{% include 'uhead.html' %}-->
+<!--<html>-->
+<!--<head>-->
+<!--  <title>Crypto Swap</title>-->
+<!--  <style>-->
+<!--    body {-->
+<!--      font-family: Arial, sans-serif;-->
+<!--      background: #0f2043;-->
+<!--      color: white;-->
+<!--      justify-content: center;-->
+<!--      align-items: center;-->
+<!--      height: 100vh;-->
+<!--    }-->
+<!--    .swap-box {-->
+<!--      background: #1a2b5a;-->
+<!--      padding: 25px;-->
+<!--      border-radius: 15px;-->
+<!--      width: 420px;-->
+<!--      text-align: center;-->
+<!--      box-shadow: 0 8px 25px rgba(0,0,0,0.5);-->
+<!--    }-->
+<!--    h2 {-->
+<!--      margin-bottom: 20px;-->
+<!--    }-->
+<!--    .row {-->
+<!--      margin: 15px 0;-->
+<!--      text-align: left;-->
+<!--    }-->
+<!--    select, input {-->
+<!--      width: 100%;-->
+<!--      padding: 12px;-->
+<!--      border-radius: 8px;-->
+<!--      border: none;-->
+<!--      margin-top: 8px;-->
+<!--    }-->
+<!--    button {-->
+<!--      margin-top: 20px;-->
+<!--      padding: 15px;-->
+<!--      background: #007bff;-->
+<!--      border: none;-->
+<!--      border-radius: 10px;-->
+<!--      font-size: 16px;-->
+<!--      font-weight: bold;-->
+<!--      cursor: pointer;-->
+<!--      color: white;-->
+<!--    }-->
+<!--    button:hover {-->
+<!--      background: #0056b3;-->
+<!--    }-->
+<!--  </style>-->
+<!--  <script>-->
+<!--    function setFromCoin(select) {-->
+<!--      let qty = select.options[select.selectedIndex].dataset.qty;-->
+<!--      let price = select.options[select.selectedIndex].dataset.price;-->
+
+<!--      document.getElementById("from_qty").value = qty;-->
+<!--      document.getElementById("from_price").value = price;-->
+
+<!--      document.getElementById("selected_qty").innerText = qty;-->
+<!--      document.getElementById("selected_price").innerText = price;-->
+<!--    }-->
+
+<!--    function setToCoin(select) {-->
+<!--      let price = select.options[select.selectedIndex].dataset.price;-->
+<!--      document.getElementById("to_price").value = price;-->
+<!--      calculateSwap();-->
+<!--    }-->
+
+<!--    function calculateSwap() {-->
+<!--      let fromQty = parseFloat(document.getElementById("from_qty").value) || 0;-->
+<!--      let fromPrice = parseFloat(document.getElementById("from_price").value) || 0;-->
+<!--      let toPrice = parseFloat(document.getElementById("to_price").value) || 0;-->
+
+<!--      if (fromQty > 0 && fromPrice > 0 && toPrice > 0) {-->
+<!--        let oldValue = fromQty * fromPrice;-->
+<!--        let newCoins = oldValue / toPrice;-->
+
+<!--        document.getElementById("old_value").innerText = "$" + oldValue.toFixed(2);-->
+<!--        document.getElementById("new_qty").value = newCoins.toFixed(8);-->
+<!--      }-->
+<!--    }-->
+<!--  </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <div class="swap-box mt-50 ml-500">-->
+<!--    <h2>Crypto Exchange</h2>-->
+<!--    <form action="/swap_action" method="post">-->
+<!--      &lt;!&ndash; From Coin &ndash;&gt;-->
+<!--      <div class="row">-->
+<!--        <label>You Send:</label>-->
+<!--        <select name="from_coin" onchange="setFromCoin(this)">-->
+<!--          {% for c in owned_coins %}-->
+<!--            <option value="{{ c.crypto_price_id }}"-->
+<!--                    data-qty="{{ c.total }}"-->
+<!--                    data-price="{{ c.current_price }}">-->
+<!--              {{ c.ticker }} ({{ c.total }} coins)-->
+<!--            </option>-->
+<!--          {% endfor %}-->
+<!--        </select>-->
+<!--        <input type="hidden" id="from_qty" name="from_qty" value="0">-->
+<!--        <input type="hidden" id="from_price" name="from_price" value="0">-->
+
+<!--        <p>Quantity: <span id="selected_qty">0</span> | Price: $<span id="selected_price">0</span> | Total Value: <span id="old_value">$0.00</span></p></p>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; To Coin &ndash;&gt;-->
+<!--      <div class="row">-->
+<!--        <label>You Get:</label>-->
+<!--        <select name="to_coin" onchange="setToCoin(this)" id="to_coin">-->
+<!--          {% for c in coins %}-->
+<!--            <option value="{{ c.crypto_price_id }}"-->
+<!--                    data-price="{{ c.current_price }}">-->
+<!--              {{ c.ticker }} ({{ c.current_price }} {{ c.fiat_currency }})-->
+<!--            </option>-->
+<!--          {% endfor %}-->
+<!--        </select>-->
+<!--        <input type="hidden" id="to_price" name="to_price" value="0">-->
+<!--        <div class="mt-5">Coins</div>-->
+<!--        <input type="text" id="new_qty" name="new_qty" readonly placeholder="Calculated coins">-->
+
+<!--      </div>-->
+
+<!--      <button type="submit">Exchange</button>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+{% include 'uhead.html' %}
+<html>
+<head>
+  <title>Crypto Swap</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f2043;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .swap-box {
+      background: #1a2b5a;
+      padding: 25px;
+      border-radius: 15px;
+      width: 420px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+    h2 { margin-bottom: 20px; }
+    .row { margin: 15px 0; text-align: left; }
+    select, input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 8px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 15px;
+      background: #007bff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+    button:hover { background: #0056b3; }
+  </style>
+  <script>
+    function setFromCoin(select) {
+      let qty = select.options[select.selectedIndex].dataset.qty;
+      let price = select.options[select.selectedIndex].dataset.price;
+
+      document.getElementById("from_qty").value = qty;
+      document.getElementById("from_price").value = price;
+
+      document.getElementById("selected_qty").innerText = qty;
+      document.getElementById("selected_price").innerText = price;
+      calculateSwap();
+    }
+
+    function setToCoin(select) {
+      let price = select.options[select.selectedIndex].dataset.price;
+      document.getElementById("to_price").value = price;
+      calculateSwap();
+    }
+
+    function calculateSwap() {
+      let fromQty = parseFloat(document.getElementById("from_qty").value) || 0;
+      let fromPrice = parseFloat(document.getElementById("from_price").value) || 0;
+      let toPrice = parseFloat(document.getElementById("to_price").value) || 0;
+
+      if (fromQty > 0 && fromPrice > 0 && toPrice > 0) {
+        let oldValue = fromQty * fromPrice;
+        let newCoins = oldValue / toPrice;
+
+        document.getElementById("old_value").innerText = "$" + oldValue.toFixed(2);
+        document.getElementById("new_qty").value = newCoins.toFixed(8);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="swap-box mt-50 ml-500">
+    <h2>Crypto Exchange</h2>
+    <form action="/swap_action" method="post">
+      <!-- From Coin -->
+      <div class="row">
+        <label>You Send:</label>
+        <select name="from_coin" onchange="setFromCoin(this)">
+          {% for c in owned_coins %}
+            <option value="{{ c.crypto_price_id }}"
+                    data-qty="{{ c.total }}"
+                    data-price="{{ c.current_price }}">
+              {{ c.ticker }} (Available: {{ c.total }} coins)
+            </option>
+          {% endfor %}
+        </select>
+        <input type="hidden" id="from_qty" name="from_qty" value="0">
+        <input type="hidden" id="from_price" name="from_price" value="0">
+
+        <p>Quantity: <span id="selected_qty">0</span> |
+           Price: $<span id="selected_price">0</span> |
+           Total Value: <span id="old_value">$0.00</span></p>
+      </div>
+
+      <!-- To Coin -->
+      <div class="row">
+        <label>You Get:</label>
+        <select name="to_coin" onchange="setToCoin(this)" id="to_coin">
+          {% for c in coins %}
+            <option value="{{ c.crypto_price_id }}"
+                    data-price="{{ c.current_price }}">
+              {{ c.ticker }} ({{ c.current_price }} {{ c.fiat_currency }})
+            </option>
+          {% endfor %}
+        </select>
+        <input type="hidden" id="to_price" name="to_price" value="0">
+        <div class="mt-5">Coins</div>
+        <input type="text" id="new_qty" name="new_qty" readonly placeholder="Calculated coins">
+      </div>
+
+      <button type="submit">Exchange</button>
+    </form>
+  </div>
+</body>
+</html>
+

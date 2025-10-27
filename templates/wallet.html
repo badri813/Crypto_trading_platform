@@ -1,0 +1,110 @@
+{% include 'uhead.html' %}
+<style>
+    body {
+    margin: 0;
+    background-color: #1c1c1c;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
+.mt-200 {
+    margin-top: 200px;
+}
+
+.ml-500 {
+    margin-left: 500px;
+}
+
+.balance-card {
+    background-color: #2a2a2a;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 255, 204, 0.2);
+    width: 400px;
+}
+
+.balance-heading {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #00ffcc;
+}
+
+.balance-amount {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.w-40 {
+    width: 48%;
+}
+
+button {
+    background-color: #00ffcc;
+    color: #000;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #00ddb0;
+    transform: translateY(-2px);
+}
+
+</style>
+<body>
+  <div class="mt-200 ml-500">
+    <div class="balance-card">
+      <div class="balance-heading">Your Balance</div>
+     <div class="balance-amount">
+        {% if wallet and wallet|length > 2 %}
+            ${{ "%.2f"|format(wallet[2]|float) }}
+        {% else %}
+            $0.00
+        {% endif %}
+        </div>
+
+
+
+      <div class="form-actions">
+          <div class="row">
+              <div class="w-40">
+              <form action="/add_amount">
+                <button type="submit">Add Amount</button>
+              </form></div>
+
+              <div class="w-40">
+              <form action="/send_to_balance">
+                <input type="hidden" name="wallet_amount" value="{{wallet[2]}}">
+                <button type="submit">Send to Balance</button>
+              </form></div>
+          </div>
+
+
+          <form action="/transactions">
+            <button type="submit">Transactions</button>
+          </form>
+      </div>
+
+    </div>
+  </div>
+</body>

@@ -1,0 +1,151 @@
+{% include 'uhead.html' %}
+<style>
+  body {
+    margin: 0;
+    background-color: #1c1c1c;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
+
+.ml-500 {
+    margin-left: 500px;
+}
+
+.card-container {
+    background-color: #2a2a2a;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 255, 204, 0.2);
+    width: 450px;
+}
+
+.card-container h2 {
+    color: #00ffcc;
+    margin-bottom: 25px;
+    font-size: 24px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #cccccc;
+}
+
+.form-group input {
+    padding: 10px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #3a3a3a;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.form-group input::placeholder {
+    color: #999;
+}
+
+.form-group input:focus {
+    border: 1px solid #00ffcc;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #00ffcc;
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+.pay-btn:hover {
+    background-color: #00ddb0;
+    transform: translateY(-2px);
+}
+
+</style>
+<body>
+  <div class="card-container mt-50 ml-500">
+    <h2>Add Amount</h2>
+    <form action="/add_amount_action">
+      <div class="form-group">
+        <label for="amount">Enter Amount</label>
+        <input type="number" id="amount" name="amount" placeholder="e.g., 1000" required>
+      </div>
+
+      <div class="form-group">
+        <label for="card_number">Card Number</label>
+        <input type="text" id="card_number" name="card_number" placeholder="e.g., 1234 5678 9012 3456"
+               required max="16" title="Enter a valid 16-digit card number">
+      </div>
+
+      <div class="form-group">
+        <label for="name_on_card">Name on Card</label>
+        <input type="text" id="name_on_card" name="name_on_card" placeholder="e.g., John Doe"
+               required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cvv">CVV</label>
+          <input type="password" id="cvv" name="cvv" placeholder="123"
+                 required maxlength="4" pattern="\d{3,4}" title="Enter a 3 or 4 digit CVV">
+        </div>
+        <div class="form-group">
+          <label for="expiry">Expiry Date</label>
+          <input type="text" id="expiry" name="expiry" placeholder="MM/YY"
+                 required pattern="(0[1-9]|1[0-2])\/\d{2}" title="Format must be MM/YY">
+        </div>
+      </div>
+
+
+
+      <button class="pay-btn" type="submit">ADD</button>
+    </form>
+  </div>
+<script>
+
+  // Restrict name to alphabets and space
+  document.getElementById('name_on_card').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+  });
+
+  // Restrict CVV to digits only
+  document.getElementById('cvv').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, '').slice(0, 4);
+  });
+
+  // Format expiry as MM/YY
+  document.getElementById('expiry').addEventListener('input', function (e) {
+    let val = this.value.replace(/\D/g, '').slice(0, 4);
+    if (val.length >= 3) val = val.slice(0, 2) + '/' + val.slice(2);
+    this.value = val;
+  });
+</script>
+
+</body>

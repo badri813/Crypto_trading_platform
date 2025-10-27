@@ -1,0 +1,175 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.bg-main {
+    background-repeat: no-repeat;
+    background-image: url("https://static.wixstatic.com/media/c837a6_94887042ef304568a8406628f7d030d1~mv2.jpg/v1/fill/w_1899,h_1099,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/c837a6_94887042ef304568a8406628f7d030d1~mv2.jpg");
+    background-size: cover; /* Ensure it fully covers the container */
+    background-position: center;
+    height: 100vh;
+    position: relative; /* Required for overlay positioning */
+}
+
+.bg-main::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(45, 104, 123, 0.7); /* Light blue shadow */
+    mix-blend-mode: overlay; /* Blend mode for a shadow effect */
+    pointer-events: none; /* Ensure it doesn't block clicks */
+}
+
+
+.bg-main-1 {
+    background-repeat: no-repeat;
+    background-image:url("https://chromeunboxed.com/wp-content/uploads/2021/01/ChromecastGoogleTVRemote5Shortcuts-750x420.jpeg?ezimgfmt=ng%3Awebp%2Fngcb118%2Frs%3Adevice%2Frscb119-2");
+    background-size: 100%;
+    height: 91vh;
+}
+
+.bg-main-2 {
+    background-repeat: no-repeat;
+    background-image:url("https://www.tvguide.com/a/img/hub/2021/04/09/eb10b479-aa45-4fc9-85ed-f559e07b0093/210312-sling-tv-plans-3-1.jpg");
+    background-size: 100%;
+    height: 91vh;
+}
+.bg-main-3 {
+    background-repeat: no-repeat;
+    background-image:url("https://cdn.gobankingrates.com/wp-content/uploads/2023/04/group-watching-smart-tv-iStock-1412871535.jpg?webp=1&w=675&quality=75");
+    background-size: 100%;
+    height: 91vh;
+}
+
+.pa {
+    position: absolute;
+    top:0;
+    left:0;
+}
+.pr {
+    position: relative;
+}
+
+
+.login-bg-img {
+    position: absolute;
+    width: 100%;
+    height: 93.7vh;
+}
+
+.login-bg-color {
+    position: absolute;
+    width: 100%;
+    height: 93.7vh;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bg-color {
+    width: 100%;
+    height: 93.7vh;
+    background-color: rgba(0, 213, 255, 0.097);
+    color: black;
+}
+
+.bg-color-1 {
+    width: 100%;
+    background-color: rgba(0, 213, 255, 0.097);
+    color: black;
+}
+
+
+.bg-img {
+    position: absolute;
+    width: 100%;
+    height: 35.7vh;
+    margin-left: 12.5%;
+}
+
+.text-1 {
+    color: white;
+}
+
+
+
+.bg-green {
+    background-color: rgb(0, 144, 0);
+    margin-top: 10px;
+    color: white;
+    width: 40%;
+    text-align: center;
+    border-radius: 14px;
+ }
+
+ .bg-red {
+    background-color: red;
+    margin-top: 10px;
+    color: white;
+    width: 40%;
+    text-align: center;
+    border-radius: 14px;
+ }
+
+
+ .sub-title {
+    color: rgba(8, 146, 156, 0.71);
+ }
+
+
+ .img {
+    width: 100%;
+ }
+
+ .m-auto {
+    margin-left: auto;
+    margin-right: auto;
+ }
+ .btn-card {
+    background-color: transparent;
+    border: none !important;
+    z-index: 100;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+ }
+ 
+ .z-high{
+    z-index: 100;
+ }
+ .m-pointer {
+    cursor: pointer;
+ }
+ .overflow{
+    height: 50px;
+    overflow: auto;
+}
+
+.bg-WOOD {
+    background-color: rgba(0, 213, 255, 0.097);
+    background-size: 100%;
+    height: 92.5vh;
+}
+
+.bg-request {
+    background-color: rgb(73, 110, 137);
+    background-size: 100%;
+    color: white;
+}
+
+
+.ram{
+background-color:red;
+}
+.white{
+    color: white;
+}
+
+.bg-cream{
+    background-color: #ECF3E0;
+}

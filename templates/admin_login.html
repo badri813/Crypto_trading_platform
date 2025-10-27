@@ -1,0 +1,88 @@
+{% include 'head.html' %}
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    background-color: #0f0f0f;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.custom-login-container {
+    background-color: #1a1a1a;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+.custom-login-form h2 {
+    text-align: center;
+    color: #00ffcc;
+    margin-bottom: 30px;
+}
+
+.custom-form-group {
+    margin-bottom: 20px;
+}
+
+.custom-form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.custom-form-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 16px;
+}
+
+.custom-form-group input:focus {
+    outline: 2px solid #00ffcc;
+}
+
+.custom-login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #00ffcc;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-login-button:hover {
+    background-color: #00e6b8;
+}
+
+</style>
+<body>
+  <div class="custom-login-container mt-50 ml-500">
+    <form class="custom-login-form" action="/admin_login_action" method="post">
+      <h2>Admin Login</h2>
+
+      <div class="custom-form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+
+      <div class="custom-form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit" class="custom-login-button">Login</button>
+    </form>
+  </div>
+</body>

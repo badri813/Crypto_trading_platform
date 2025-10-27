@@ -1,0 +1,97 @@
+{% include 'uhead.html' %}
+<style>
+body {
+    background-color: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.card-container {
+    background-color: #1f1f1f;
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+    color: #ffffff;
+}
+
+.card-container h2 {
+    text-align: center;
+    color: #00ffcc;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    font-size: 16px;
+    transition: border 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #00ffcc;
+    outline: none;
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #00ffcc;
+    color: #000000;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.pay-btn:hover {
+    background-color: #00e6b8;
+}
+</style>
+<body>
+  <div class="card-container mt-100 ml-500">
+    <h2>Send To Bank</h2>
+    <form action="/send_to_balance_action">
+      <div class="form-group">
+        <label for="amount">Enter Amount</label>
+        <input type="number" id="amount" name="amount" placeholder="e.g., 1000"
+               min="1" max="{{wallet_amount}}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="card_number">ACC Number</label>
+        <input type="text" id="card_number" name="acc_number" placeholder="ACC Number"
+               required pattern="\d{8,20}" title="Enter a valid account number (8 to 20 digits)">
+      </div>
+
+      <div class="form-group">
+        <label for="name_on_card">Bank Name</label>
+        <input type="text" id="name_on_card" name="bank_name" placeholder="Bank Name"
+               required pattern="[A-Za-z\s]{2,50}" title="Only letters and spaces allowed, min 2 characters">
+      </div>
+
+      <button class="pay-btn" type="submit">Send</button>
+    </form>
+  </div>
+
+</body>

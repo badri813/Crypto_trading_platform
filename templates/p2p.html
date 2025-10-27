@@ -1,0 +1,128 @@
+{% include 'uhead.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>P2P Trading</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .p2p-container { margin: 40px auto; max-width: 1100px; }
+        .section-title { margin: 30px 0 15px; font-size: 1.5rem; font-weight: bold; }
+        .p2p-table { background: #111; color: #fff; border-radius: 10px; overflow: hidden; }
+        .p2p-table th {
+            background: #000;   /* black background */
+            color: #fff;        /* white text */
+            font-weight: 600;
+            padding: 12px;
+        }
+        .p2p-table td { vertical-align: middle; padding: 14px; }
+        .seller-name { font-weight: 600; }
+        .completion { font-size: 0.9rem; color: #bbb; }
+        .btn-trade { border-radius: 8px; padding: 6px 16px; }
+        .filter-btns { margin-bottom: 20px; max-width: 250px; }
+    </style>
+</head>
+<body>
+<div class="container p2p-container">
+
+    <!-- My Orders -->
+    <h3 class="section-title">My P2P Orders</h3>
+    {% if user_orders %}
+        <div class="table-responsive">
+            <table class="table p2p-table">
+                <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Price</th>
+                    <th>Payment Mode</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in user_orders %}
+                <tr>
+                    <td>{{ order.ticker }}</td>
+                    <td>$ {{ "%.2f"|format(order.price|float) }}</td>
+                    <td>{{ order.payment_mode }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.created_at }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">You don’t have any P2P orders yet.</p>
+    {% endif %}
+
+    <!-- Market Orders -->
+    <h3 class="section-title">Market Orders</h3>
+
+    <!-- Filter Dropdown -->
+    <div class="filter-btns mb-3">
+        <select class="form-select" id="tickerFilter" onchange="filterTickerDropdown()">
+            <option value="all" selected>All</option>
+            {% for ticker in tickers %}
+                <option value="{{ ticker }}">{{ ticker }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% if market_orders %}
+        <div class="table-responsive">
+            <table class="table p2p-table">
+                <thead>
+                <tr>
+                    <th>Advertisers</th>
+                    <th>Price</th>
+                    <th>Available / Order Limit</th>
+                    <th>Payment</th>
+                    <th>Trade</th>
+                </tr>
+                </thead>
+                <tbody id="marketOrders">
+                {% for order in market_orders %}
+                <tr class="market-order" data-ticker="{{ order.ticker }}">
+                    <td>
+                        <div class="seller-name">{{ order.user_name }}</div>
+                        <div class="completion">{{ order.email }}</div>
+                    </td>
+                    <td><b>$ {{ "%.2f"|format(order.price|float) }}</b></td>
+                    <td>
+                        {{ order.available }} {{ order.ticker }}<br>
+                        <!-- Uncomment if you want limits -->
+                        <!-- {{ order.min_limit }} - {{ order.max_limit }} -->
+                    </td>
+                    <td>{{ order.payment_mode }}</td>
+                    <td>
+                        <form action="/buy_p2p/{{ order.order_id }}" method="POST">
+                            <button type="submit" class="btn btn-success btn-trade">Buy {{ order.ticker }}</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">No market orders available.</p>
+    {% endif %}
+
+</div>
+
+<script>
+function filterTickerDropdown() {
+    let selected = document.getElementById("tickerFilter").value;
+    let orders = document.querySelectorAll(".market-order");
+    orders.forEach(order => {
+        if (selected === "all" || order.getAttribute("data-ticker") === selected) {
+            order.style.display = "table-row";
+        } else {
+            order.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!--{% include 'uhead.html' %}-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>User Home - Crypto Prices</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            margin: 0;-->
+<!--            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--            background-color: #0f0f0f;-->
+<!--            color: white;-->
+<!--        }-->
+<!--        .sidebar {-->
+<!--            width: 405px;-->
+<!--            padding: 20px;-->
+<!--            height: 100vh;-->
+<!--            overflow-y: auto;-->
+<!--            background-color: #0f0f0f;-->
+<!--        }-->
+<!--        .search-bar input {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--            font-size: 16px;-->
+<!--            border-radius: 8px;-->
+<!--            border: none;-->
+<!--            background-color: #1c1c1c;-->
+<!--            color: #00ffcc;-->
+<!--        }-->
+<!--        .price-item {-->
+<!--            background: #1a1a1a;-->
+<!--            padding: 15px;-->
+<!--            margin-bottom: 12px;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 2px 5px rgba(0,0,0,0.08);-->
+<!--        }-->
+<!--        .price-item:hover {-->
+<!--            transform: translateY(-3px);-->
+<!--            transition: 0.2s ease;-->
+<!--        }-->
+<!--        .ticker {-->
+<!--            font-weight: bold;-->
+<!--            font-size: 18px;-->
+<!--            color: #00ffcc;-->
+<!--        }-->
+<!--        .price {-->
+<!--            color: #00ffcc;-->
+<!--            font-size: 16px;-->
+<!--        }-->
+<!--        .main-content {-->
+<!--            flex: 1;-->
+<!--            padding: 40px;-->
+<!--            background-color: #0f0f0f;-->
+<!--        }-->
+<!--        .card {-->
+<!--            background-color: #1c1c1c;-->
+<!--            padding: 30px;-->
+<!--            border-radius: 12px;-->
+<!--            max-width: 600px;-->
+<!--            margin: auto;-->
+<!--        }-->
+<!--        .input-group {-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        .input-group label {-->
+<!--            display: block;-->
+<!--            margin-bottom: 5px;-->
+<!--            font-weight: bold;-->
+<!--            color: #ccc;-->
+<!--        }-->
+<!--        .input-group input,-->
+<!--        .input-group select {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--            background-color: #292929;-->
+<!--            border: none;-->
+<!--            color: #00ffcc;-->
+<!--            border-radius: 6px;-->
+<!--        }-->
+<!--        .auth-action {-->
+<!--            width: 100%;-->
+<!--            background-color: #00ffcc;-->
+<!--            color: #000;-->
+<!--            font-weight: bold;-->
+<!--            padding: 12px;-->
+<!--            border-radius: 6px;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        .toggle-buttons {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            margin-bottom: 30px;-->
+<!--            gap: 20px;-->
+<!--        }-->
+<!--        .toggle-buttons button {-->
+<!--            padding: 10px 20px;-->
+<!--            border: none;-->
+<!--            border-radius: 8px;-->
+<!--            background-color: #292929;-->
+<!--            color: #00ffcc;-->
+<!--            cursor: pointer;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+<!--        .toggle-buttons button.active {-->
+<!--            background-color: #00ffcc;-->
+<!--            color: #000;-->
+<!--        }-->
+<!--    </style>-->
+
+<!--    <script>-->
+<!--        function showTab(tab) {-->
+<!--            document.getElementById('tradingViewContent').style.display = (tab === 'trading') ? 'block' : 'none';-->
+<!--            document.getElementById('buyCryptoContent').style.display = (tab === 'buy') ? 'block' : 'none';-->
+<!--            document.getElementById('tradingViewTab').classList.toggle('active', tab === 'trading');-->
+<!--            document.getElementById('buyCryptoTab').classList.toggle('active', tab === 'buy');-->
+<!--        }-->
+
+<!--        function showForm(type) {-->
+<!--            document.getElementById('buyForm').style.display = (type === 'buy') ? 'block' : 'none';-->
+<!--            document.getElementById('sellForm').style.display = (type === 'sell') ? 'block' : 'none';-->
+<!--            document.getElementById('buyBtn').classList.toggle('active', type === 'buy');-->
+<!--            document.getElementById('sellBtn').classList.toggle('active', type === 'sell');-->
+<!--        }-->
+
+<!--        function updateBuyCost() {-->
+<!--            const price = parseFloat(document.getElementById('buy_cryptoSelect').selectedOptions[0].getAttribute('data-price') || 0);-->
+<!--            const coins = parseFloat(document.getElementById('buy_coins').value || 0);-->
+<!--            const wallet = parseFloat(document.getElementById('wallet_balance').textContent.replace('$', '') || 0);-->
+<!--            const total = price * coins;-->
+<!--            const buyBtn = document.getElementById('btn-buy');-->
+
+<!--            if (!isNaN(total)) {-->
+<!--                document.getElementById('buy_cost').value = total.toFixed(2);-->
+<!--                buyBtn.style.display = (total <= wallet && coins > 0) ? 'block' : 'none';-->
+<!--            } else {-->
+<!--                document.getElementById('buy_cost').value = '';-->
+<!--                buyBtn.style.display = 'none';-->
+<!--            }-->
+<!--        }-->
+
+<!--        function updateSellCost() {-->
+<!--            const price = parseFloat(document.getElementById('sell_cryptoSelect').selectedOptions[0].getAttribute('data-price') || 0);-->
+<!--            const coins = parseFloat(document.getElementById('sell_coins').value || 0);-->
+<!--            const maxCoins = parseFloat(document.getElementById('sell_coins').getAttribute('max') || 0);-->
+<!--            const total = price * coins;-->
+
+<!--            if (!isNaN(coins) && coins > 0 && coins <= maxCoins) {-->
+<!--                document.getElementById('sell_cost').value = total.toFixed(2);-->
+<!--                document.getElementById('btn-sell').style.display = 'block';-->
+<!--            } else {-->
+<!--                document.getElementById('sell_cost').value = '0.00';-->
+<!--                document.getElementById('btn-sell').style.display = 'none';-->
+<!--            }-->
+<!--        }-->
+
+<!--        function get_coins() {-->
+<!--            let crypto_price_id = document.getElementById("sell_cryptoSelect").value;-->
+<!--            fetch(`/get_coins?crypto_price_id=${crypto_price_id}`)-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    console.log("Coins fetched:", data);-->
+<!--                    const availableCoins = data.data;-->
+<!--                    const price = parseFloat(document.getElementById('sell_cryptoSelect').selectedOptions[0].getAttribute('data-price'));-->
+<!--                    const coinsInput = document.getElementById('sell_coins');-->
+<!--                    const costInput = document.getElementById('sell_cost');-->
+<!--                    const sellBtn = document.getElementById('btn-sell');-->
+
+<!--                    if (availableCoins !== null && availableCoins > 0) {-->
+<!--                        coinsInput.value = availableCoins;-->
+<!--                        coinsInput.setAttribute('max', availableCoins);-->
+<!--                        coinsInput.removeAttribute('disabled');-->
+<!--                        costInput.value = (availableCoins * price).toFixed(2);-->
+<!--                        sellBtn.style.display = 'block';-->
+<!--                    } else {-->
+<!--                        coinsInput.value = 0;-->
+<!--                        coinsInput.setAttribute('max', 0);-->
+<!--                        coinsInput.setAttribute('disabled', true);-->
+<!--                        costInput.value = '0.00';-->
+<!--                        sellBtn.style.display = 'none';-->
+<!--                    }-->
+<!--                })-->
+<!--                .catch(error => console.error("Error fetching coins:", error));-->
+<!--        }-->
+
+<!--        function filterTickers() {-->
+<!--            let input = document.getElementById("searchInput").value.toUpperCase();-->
+<!--            let items = document.getElementsByClassName("price-item");-->
+<!--            for (let item of items) {-->
+<!--                let ticker = item.getElementsByClassName("ticker")[0].textContent.toUpperCase();-->
+<!--                item.style.display = ticker.includes(input) ? "" : "none";-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--<div class="row">-->
+<!--    &lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--    <div class="sidebar">-->
+<!--        <h2>📈 Crypto Prices</h2>-->
+<!--        <div class="search-bar">-->
+<!--            <input type="text" id="searchInput" onkeyup="filterTickers()" placeholder="Search Ticker...">-->
+<!--        </div>-->
+<!--        {% for price in crypto_prices %}-->
+<!--        <div class="price-item">-->
+<!--            <div class="ticker">{{ price[1] }}</div>-->
+<!--            <div class="price">${{ '%.3f'|format(price[2]|float) }}</div>-->
+<!--        </div>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Main Content &ndash;&gt;-->
+<!--    <div class="main-content">-->
+<!--        <div class="toggle-buttons">-->
+<!--            <button id="tradingViewTab" class="active" onclick="showTab('trading')">Trading View</button>-->
+<!--            <button id="buyCryptoTab" onclick="showTab('buy')">Buy/Sell Crypto</button>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Trading View Section &ndash;&gt;-->
+<!--        <div id="tradingViewContent">-->
+<!--            <iframe title="coinprice_forecast" width="100%" height="500px"-->
+<!--                src="https://app.powerbi.com/view?r=eyJrIjoiMzM4ZmE2NzYtNThmNC00YzU4LTkzYTQtZTMyODNhNThhYWFhIiwidCI6IjdhZmI5ZTIyLTkzMDgtNDE4Ni04ZTI5LWVhMjMxZmYzYmFmNyIsImMiOjN9"-->
+<!--                frameborder="0" allowFullScreen="true"></iframe>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Buy/Sell Section &ndash;&gt;-->
+<!--        <div id="buyCryptoContent" style="display: none;">-->
+<!--            <div class="card">-->
+<!--                <h2>💰 Wallet Balance:-->
+<!--                    {% if wallet_amount and wallet_amount[2] is not none %}-->
+<!--                        <span id="wallet_balance">${{ '%.2f'|format(wallet_amount[2]|float) }}</span>-->
+<!--                    {% else %}-->
+<!--                        <span id="wallet_balance">$0.00</span>-->
+<!--                    {% endif %}-->
+<!--                </h2>-->
+
+<!--                <div class="toggle-buttons">-->
+<!--                    <button id="buyBtn" class="active" onclick="showForm('buy')">Buy</button>-->
+<!--                    <button id="sellBtn" onclick="showForm('sell')">Sell</button>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Buy Form &ndash;&gt;-->
+<!--                <form id="buyForm" method="GET" action="/buy_coin">-->
+<!--                    <div class="input-group">-->
+<!--                        <label>Select Crypto to Buy</label>-->
+<!--                        <select id="buy_cryptoSelect" name="crypto_price_id" onchange="updateBuyCost()">-->
+<!--                            {% for price in crypto_prices %}-->
+<!--                            <option value="{{ price[0] }}" data-price="{{ price[2] }}">{{ price[1] }}</option>-->
+<!--                            {% endfor %}-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                    <div class="input-group">-->
+<!--                        <label>Coins to Buy</label>-->
+<!--                        <input type="number" name="number_of_coins" id="buy_coins" value="0" oninput="updateBuyCost()" min="0.1" step="0.1">-->
+<!--                    </div>-->
+
+<!--                    <div class="input-group">-->
+<!--                        <label>Total Cost ($)</label>-->
+<!--                        <input type="text" id="buy_cost" name="cost" readonly>-->
+<!--                    </div>-->
+
+<!--                    <button type="submit" id="btn-buy" class="auth-action" style="display: none;">Buy Crypto</button>-->
+<!--                </form>-->
+
+<!--                &lt;!&ndash; Sell Form &ndash;&gt;-->
+<!--                <form id="sellForm" method="GET" action="/sell_coin" style="display: none;">-->
+<!--                    <div class="input-group">-->
+<!--                        <label>Select Crypto to Sell</label>-->
+<!--                        <select id="sell_cryptoSelect" name="crypto_price_id" onchange="get_coins()">-->
+<!--                            {% for price in crypto_prices %}-->
+<!--                            <option value="{{ price[0] }}" data-price="{{ price[2] }}">{{ price[1] }}</option>-->
+<!--                            {% endfor %}-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                    <div class="input-group">-->
+<!--                        <label>Coins to Sell</label>-->
+<!--                        <input type="number" name="number_of_coins" id="sell_coins" value="0" oninput="updateSellCost()" min="0.1" step="0.1" disabled>-->
+<!--                    </div>-->
+
+<!--                    <div class="input-group">-->
+<!--                        <label>Estimated Return ($)</label>-->
+<!--                        <input type="text" id="sell_cost" name="cost" readonly>-->
+<!--                    </div>-->
+
+<!--                    <button type="submit" id="btn-sell" class="auth-action" style="display: none;">Sell Crypto</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+{% include 'uhead.html' %}
+<html>
+<head>
+    <title>User Home - Crypto Prices</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f0f0f;
+            color: white;
+        }
+        .sidebar {
+            width: 405px;
+            padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #0f0f0f;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #1c1c1c;
+            color: #00ffcc;
+        }
+        .price-item {
+            background: #1a1a1a;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+        .price-item:hover {
+            transform: translateY(-3px);
+            transition: 0.2s ease;
+        }
+        .ticker {
+            font-weight: bold;
+            font-size: 18px;
+            color: #00ffcc;
+        }
+        .price {
+            color: #00ffcc;
+            font-size: 16px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background-color: #0f0f0f;
+        }
+        .card {
+            background-color: #1c1c1c;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: auto;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ccc;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            background-color: #292929;
+            border: none;
+            color: #00ffcc;
+            border-radius: 6px;
+        }
+        .auth-action {
+            width: 100%;
+            background-color: #00ffcc;
+            color: #000;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        .toggle-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #292929;
+            color: #00ffcc;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .toggle-buttons button.active {
+            background-color: #00ffcc;
+            color: #000;
+        }
+    </style>
+
+    <script>
+        function showForm(type) {
+            document.getElementById('buyForm').style.display = (type === 'buy') ? 'block' : 'none';
+            document.getElementById('sellForm').style.display = (type === 'sell') ? 'block' : 'none';
+            document.getElementById('buyBtn').classList.toggle('active', type === 'buy');
+            document.getElementById('sellBtn').classList.toggle('active', type === 'sell');
+        }
+
+        function updateBuyCost() {
+            const price = parseFloat(document.getElementById('buy_cryptoSelect').selectedOptions[0].getAttribute('data-price') || 0);
+            const coins = parseFloat(document.getElementById('buy_coins').value || 0);
+            const wallet = parseFloat(document.getElementById('wallet_balance').textContent.replace('$', '') || 0);
+            const total = price * coins;
+            const buyBtn = document.getElementById('btn-buy');
+
+            if (!isNaN(total)) {
+                document.getElementById('buy_cost').value = total.toFixed(2);
+                buyBtn.style.display = (total <= wallet && coins > 0) ? 'block' : 'none';
+            } else {
+                document.getElementById('buy_cost').value = '';
+                buyBtn.style.display = 'none';
+            }
+        }
+
+        function updateSellCost() {
+            const price = parseFloat(document.getElementById('sell_cryptoSelect').selectedOptions[0].getAttribute('data-price') || 0);
+            const coins = parseFloat(document.getElementById('sell_coins').value || 0);
+            const maxCoins = parseFloat(document.getElementById('sell_coins').getAttribute('max') || 0);
+            const total = price * coins;
+
+            if (!isNaN(coins) && coins > 0 && coins <= maxCoins) {
+                document.getElementById('sell_cost').value = total.toFixed(2);
+                document.getElementById('btn-sell').style.display = 'block';
+            } else {
+                document.getElementById('sell_cost').value = '0.00';
+                document.getElementById('btn-sell').style.display = 'none';
+            }
+        }
+
+        function get_coins() {
+            let crypto_price_id = document.getElementById("sell_cryptoSelect").value;
+            fetch(`/get_coins?crypto_price_id=${crypto_price_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const availableCoins = data.data;
+                    const price = parseFloat(document.getElementById('sell_cryptoSelect').selectedOptions[0].getAttribute('data-price'));
+                    const coinsInput = document.getElementById('sell_coins');
+                    const costInput = document.getElementById('sell_cost');
+                    const sellBtn = document.getElementById('btn-sell');
+
+                    if (availableCoins !== null && availableCoins > 0) {
+                        coinsInput.value = availableCoins;
+                        coinsInput.setAttribute('max', availableCoins);
+                        coinsInput.removeAttribute('disabled');
+                        costInput.value = (availableCoins * price).toFixed(2);
+                        sellBtn.style.display = 'block';
+                    } else {
+                        coinsInput.value = 0;
+                        coinsInput.setAttribute('max', 0);
+                        coinsInput.setAttribute('disabled', true);
+                        costInput.value = '0.00';
+                        sellBtn.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error("Error fetching coins:", error));
+        }
+
+        function filterTickers() {
+            let input = document.getElementById("searchInput").value.toUpperCase();
+            let items = document.getElementsByClassName("price-item");
+            for (let item of items) {
+                let ticker = item.getElementsByClassName("ticker")[0].textContent.toUpperCase();
+                item.style.display = ticker.includes(input) ? "" : "none";
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div class="row">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>📈 Crypto Prices</h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" onkeyup="filterTickers()" placeholder="Search Ticker...">
+        </div>
+        {% for price in crypto_prices %}
+        <div class="price-item">
+            <div class="ticker">{{ price[1] }}</div>
+            <div class="price">${{ '%.3f'|format(price[2]|float) }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="card">
+            <h2>💰 Wallet Balance:
+                {% if wallet_amount and wallet_amount[2] is not none %}
+                    <span id="wallet_balance">${{ '%.2f'|format(wallet_amount[2]|float) }}</span>
+                {% else %}
+                    <span id="wallet_balance">$0.00</span>
+                {% endif %}
+            </h2>
+
+            <div class="toggle-buttons">
+                <button id="buyBtn" class="active" onclick="showForm('buy')">Buy</button>
+                <button id="sellBtn" onclick="showForm('sell')">Sell</button>
+            </div>
+
+            <!-- Buy Form -->
+            <form id="buyForm" method="GET" action="/buy_coin">
+                <div class="input-group">
+                    <label>Select Crypto to Buy</label>
+                    <select id="buy_cryptoSelect" name="crypto_price_id" onchange="updateBuyCost()">
+                        {% for price in crypto_prices %}
+                        <option value="{{ price[0] }}" data-price="{{ price[2] }}">{{ price[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Coins to Buy</label>
+                    <input type="number" name="number_of_coins" id="buy_coins" value="0" oninput="updateBuyCost()" min="0.1" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label>Total Cost ($)</label>
+                    <input type="text" id="buy_cost" name="cost" readonly>
+                </div>
+
+                <button type="submit" id="btn-buy" class="auth-action" style="display: none;">Buy Crypto</button>
+            </form>
+
+            <!-- Sell Form -->
+            <form id="sellForm" method="GET" action="/sell_coin" style="display: none;">
+                <div class="input-group">
+                    <label>Select Crypto to Sell</label>
+                    <select id="sell_cryptoSelect" name="crypto_price_id" onchange="get_coins()">
+                        {% for price in crypto_prices %}
+                        <option value="{{ price[0] }}" data-price="{{ price[2] }}">{{ price[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Coins to Sell</label>
+                    <input type="number" name="number_of_coins" id="sell_coins" value="0" oninput="updateSellCost()" min="0.1" step="0.1" disabled>
+                </div>
+
+                <div class="input-group">
+                    <label>Estimated Return ($)</label>
+                    <input type="text" id="sell_cost" name="cost" readonly>
+                </div>
+
+                <button type="submit" id="btn-sell" class="auth-action" style="display: none;">Sell Crypto</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
