@@ -1,0 +1,91 @@
+# ============================================================================
+# Crypto Trading Platform - Complete Requirements
+# ============================================================================
+# Python Version: 3.9 - 3.11 (recommended: 3.10)
+# ============================================================================
+
+# Core Web Framework
+Flask==3.0.0
+Flask-CORS==4.0.0
+Flask-SocketIO==5.3.5
+python-socketio==5.10.0
+Werkzeug==3.0.1
+
+# Database Drivers
+PyMySQL==1.1.0
+pymysql[rsa]==1.1.0
+
+# Data Processing & Analysis
+pandas==2.1.4
+numpy==1.26.2
+openpyxl==3.1.2  # For Excel file support
+
+# Financial Data & Market Data
+yfinance==0.2.33
+
+# Message Queue / Streaming (Kafka)
+confluent-kafka==2.3.0
+kafka-python==2.0.2  # Alternative Kafka client
+
+# AWS Services (Cloud Storage)
+boto3==1.34.20
+botocore==1.34.20
+
+# Web Scraping & Browser Automation
+selenium==4.16.0
+webdriver-manager==4.0.1  # Auto-manage ChromeDriver
+
+# Machine Learning & NLP (Sentiment Analysis)
+torch==2.1.2
+transformers==4.36.2
+sentencepiece==0.1.99  # Required by some transformers models
+tokenizers==0.15.0
+
+# Data Visualization
+plotly==5.18.0
+matplotlib==3.8.2
+kaleido==0.2.1  # For static image export from plotly
+
+# Technical Analysis
+ta==0.11.0  # Technical analysis library (for RSI, etc.)
+
+# HTTP Requests
+requests==2.31.0
+urllib3==2.1.0
+
+# Date/Time Handling
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Environment Variables Management
+python-dotenv==1.0.0
+
+# Data Validation
+validators==0.22.0
+
+# Cryptography & Security
+cryptography==41.0.7
+bcrypt==4.1.1
+
+# JSON Processing
+simplejson==3.19.2
+
+# Logging
+loguru==0.7.2
+
+# Task Scheduling
+APScheduler==3.10.4
+
+# Testing (Optional but Recommended)
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Code Quality (Optional)
+flake8==6.1.0
+black==23.12.1
+pylint==3.0.3
+
+# Type Checking (Optional)
+mypy==1.7.1
+
