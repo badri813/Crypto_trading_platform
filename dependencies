@@ -1,0 +1,119 @@
+# ============================================================================
+# SYSTEM DEPENDENCIES & EXTERNAL SERVICES
+# ============================================================================
+# These need to be installed separately on your system:
+#
+# 1. KAFKA & ZOOKEEPER
+#    - Apache Kafka 3.6.x or higher
+#    - Apache Zookeeper 3.8.x or higher
+#    - Installation:
+#      - Download: https://kafka.apache.org/downloads
+#      - Extract and configure
+#      - Start Zookeeper: bin/zookeeper-server-start.sh config/zookeeper.properties
+#      - Start Kafka: bin/kafka-server-start.sh config/server.properties
+#
+# 2. MYSQL DATABASE
+#    - MySQL Server 8.0.x or higher
+#    - Create database: mycrypto_2
+#    - Required tables: users, wallet, crypto_price, transactions, 
+#                      p2p_orders, sentiment_scores, news_data, 
+#                      crypto_data, image_icon, rsi_summary
+#
+# 3. CHROME & CHROMEDRIVER
+#    - Google Chrome Browser (latest stable)
+#    - ChromeDriver (matching Chrome version)
+#    - Auto-managed by webdriver-manager or download from:
+#      https://chromedriver.chromium.org/
+#
+# 4. AWS CONFIGURATION
+#    - AWS Account with S3 access
+#    - Configure credentials:
+#      - AWS CLI: aws configure
+#      - Or use environment variables:
+#        AWS_ACCESS_KEY_ID
+#        AWS_SECRET_ACCESS_KEY
+#        AWS_DEFAULT_REGION
+#
+# ============================================================================
+# INSTALLATION INSTRUCTIONS
+# ============================================================================
+#
+# 1. Create virtual environment:
+#    python3.10 -m venv venv
+#    source venv/bin/activate  # On Windows: venv\Scripts\activate
+#
+# 2. Upgrade pip:
+#    pip install --upgrade pip
+#
+# 3. Install requirements:
+#    pip install -r requirements.txt
+#
+# 4. Install system dependencies (Ubuntu/Debian):
+#    sudo apt-get update
+#    sudo apt-get install -y mysql-server default-jre
+#
+# 5. Download and setup Kafka & Zookeeper:
+#    wget https://downloads.apache.org/kafka/3.6.1/kafka_2.13-3.6.1.tgz
+#    tar -xzf kafka_2.13-3.6.1.tgz
+#    cd kafka_2.13-3.6.1
+#
+# 6. Setup MySQL database:
+#    mysql -u root -p < database_schema.sql
+#
+# ============================================================================
+# ENVIRONMENT VARIABLES (Create .env file)
+# ============================================================================
+# FLASK_APP=main.py
+# FLASK_ENV=development
+# SECRET_KEY=your_secret_key_here
+#
+# # Database
+# DB_HOST=localhost
+# DB_USER=root
+# DB_PASSWORD=your_password
+# DB_NAME=mycrypto_2
+#
+# # Kafka
+# KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+# KAFKA_TOPIC=stock_data
+#
+# # AWS
+# AWS_ACCESS_KEY_ID=your_access_key
+# AWS_SECRET_ACCESS_KEY=your_secret_key
+# AWS_BUCKET_NAME=crypto-project12
+# AWS_REGION=us-east-1
+#
+# # Chrome Driver
+# CHROME_DRIVER_PATH=/path/to/chromedriver
+#
+# ============================================================================
+# DOCKER ALTERNATIVE (Optional)
+# ============================================================================
+# You can use Docker Compose to run Kafka + Zookeeper:
+#
+# docker-compose.yml:
+# ---
+# version: '3'
+# services:
+#   zookeeper:
+#     image: confluentinc/cp-zookeeper:7.5.0
+#     environment:
+#       ZOOKEEPER_CLIENT_PORT: 2181
+#       ZOOKEEPER_TICK_TIME: 2000
+#     ports:
+#       - "2181:2181"
+#
+#   kafka:
+#     image: confluentinc/cp-kafka:7.5.0
+#     depends_on:
+#       - zookeeper
+#     ports:
+#       - "9092:9092"
+#     environment:
+#       KAFKA_BROKER_ID: 1
+#       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+#       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#
+# Then run: docker-compose up -d
+# ============================================================================
